@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin - Users</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .actions a {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>All Users</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Roles</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user: ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.username}"></td>
+        <td>
+            <span th:each="role, iterStat : ${user.roles}"
+                  th:text="${role.name} + (${iterStat.last} ? '' : ', ')"></span>
+        </td>
+        <td class="actions">
+            <a th:href="@{/admin/update/{id}(id=${user.id})}">Update</a>
+            <form th:method="POST" th:action="@{/admin/delete/{id}(id=${user.id})}">
+                <button type="submit">Delete User</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a th:href="@{/admin/new}">Create new user</a>
+</body>
+</html>
