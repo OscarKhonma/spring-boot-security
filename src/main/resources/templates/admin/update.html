@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Update User</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -68,24 +70,38 @@
     <input type="hidden" th:field="*{id}"/>
 
     <label>
-        <strong>ID:</strong>
+        ID:
         <span th:text="${user.id}"></span>
     </label>
 
     <label>
-        <strong>Username:</strong>
+        Username:
         <input type="text" th:field="*{username}"/>
     </label>
 
     <label>
-        <strong>New Password:</strong>
-        <input type="password" th:field="*{password}" placeholder="New password"/>
+        New Password:
+        <input type="password" th:field="*{password}" placeholder="New password" required/>
+    </label>
+    <label>
+        Lastname
+        <input type="text" th:field="*{lastname}" placeholder="Lastname" />
+    </label>
+    <label>
+        Email
+        <input type="text" th:field="*{email}" placeholder="Email" />
+    </label>
+    <label>
+        Age
+        <input type="text" th:field="*{age}" placeholder="Age" />
     </label>
 
-    <label>
-        <strong>Roles:</strong>
-        <input type="text" name="rol" th:value="${roles}" placeholder="ROLE_USER, ROLE_ADMIN"/>
-    </label>
+    <select class="form-select" multiple th:field="*{roles}" aria-label="multiple select example">
+        <option value="" disabled selected>Select roles</option>
+        <th:block th:each="role : ${roles}">
+            <option th:value="${role.id}" th:text="${role.name}"></option>
+        </th:block>
+    </select>
 
     <button type="submit">Update User</button>
 </form>

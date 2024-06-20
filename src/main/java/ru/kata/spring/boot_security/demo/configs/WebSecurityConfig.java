@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/", "/index")
+        http.authorizeRequests().antMatchers("/")
                     .permitAll()
                 .antMatchers("/admin/**")
                     .hasRole("ADMIN")
@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    // аутентификация inMemory
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

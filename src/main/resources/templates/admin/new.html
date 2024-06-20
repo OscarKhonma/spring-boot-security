@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Create User</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -75,9 +77,23 @@
         <input type="password" name="password" th:field="*{password}" placeholder="Password" required/>
     </label>
     <label>
-        Roles
-        <input type="text" name="rol" placeholder="ROLE_USER, ROLE_ADMIN" required/>
+        Lastname
+        <input type="text" name="lastname" th:field="*{lastname}" placeholder="Lastname" required/>
     </label>
+    <label>
+        Email
+        <input type="text" name="email" th:field="*{email}" placeholder="Email" required/>
+    </label>
+    <label>
+        Age
+        <input type="text" name="age" th:field="*{age}" placeholder="Age" required/>
+    </label>
+    <select class="form-select" multiple th:field="*{roles}" aria-label="multiple select example">
+        <option value="" disabled selected>Select roles</option>
+        <th:block th:each="role : ${roles}">
+            <option th:value="${role.id}" th:text="${role.name}"></option>
+        </th:block>
+    </select>
     <button type="submit">Create User</button>
 </form>
 <button class="logout-button" onclick="window.location.href='/logout'">Logout</button>

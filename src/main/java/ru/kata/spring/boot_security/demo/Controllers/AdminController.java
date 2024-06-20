@@ -8,8 +8,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.services.MyUserService;
 import ru.kata.spring.boot_security.demo.services.RoleService;
+import ru.kata.spring.boot_security.demo.services.UserService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,69 +21,47 @@ import java.util.stream.Collectors;
 @RequestMapping("/admin")
 public class AdminController {
     private RoleService roleService;
-    private MyUserService myUserService;
+    private UserService userService;
 
     @GetMapping
     public String adminView(Model model) {
-        List<User> allUsers = myUserService.getAllUsers();
+        List<User> allUsers = userService.getAllUsers();
         model.addAttribute("users", allUsers);
         return "admin/admin";
     }
 
     @GetMapping("/new")
     public String newUser(Model model) {
+        Set<Role> allRoles = roleService.getAllRoles();
         model.addAttribute("user", new User());
-        model.addAttribute("rol", "");
+        model.addAttribute("roles", allRoles);
         return "admin/new";
     }
 
-    //    ROLE_ADMIN, ROLE_USER,ROLE_ADMIN,ROLE_asd
+
     @PostMapping("/create")
-    public String createUser(@ModelAttribute("user") User user, @RequestParam("rol") String rol) {
-        Set<String> tamp = Arrays.stream(rol.split(","))
-                .map(String::trim)
-                .filter(role -> role.equals("ROLE_USER") || role.equals("ROLE_ADMIN"))
-                .collect(Collectors.toSet());
-        if (!tamp.isEmpty()) {
-            Set<Role> roleList = tamp.stream()
-                    .map(roleName -> roleService.findByName(roleName))
-                    .collect(Collectors.toSet());
-            user.setRoles(roleList);
-        }
-        myUserService.createUser(user);
+    public String createUser(@ModelAttribute("user") User user) {
+        userService.createUser(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/update/{id}")
     public String updateUserView(@PathVariable Long id, Model model) {
-        model.addAttribute("user", myUserService.getUserById(id));
-        String roles = StringUtils.collectionToDelimitedString(myUserService.getUserById(id).getRoles().stream().map(Role::getName).collect(Collectors.toList()), ", ");
-        model.addAttribute("roles", roles);
-        System.out.println(myUserService.getUserById(id).getId());
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roleService.getAllRoles());
         return "admin/update";
     }
 
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") User user, @RequestParam("rol") String rol) {
-        System.out.println(myUserService.getUserById(1L).getId());
-        System.out.println(user.getId());
-        Set<String> tamp = Arrays.stream(rol.split(","))
-                .map(String::trim)
-                .filter(role -> role.equals("ROLE_USER") || role.equals("ROLE_ADMIN"))
-                .collect(Collectors.toSet());
-        if (!tamp.isEmpty()) {
-            Set<Role> roleList = tamp.stream()
-                    .map(roleName -> roleService.findByName(roleName))
-                    .collect(Collectors.toSet());
-            user.setRoles(roleList);
-        }
-        myUserService.updateUser(user);
+    public String updateUser(@ModelAttribute("user") User user) {
+        userService.updateUser(user);
         return "redirect:/admin";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
-        myUserService.deleteUser(id);
+        userService.deleteUser(id);
         return "redirect:/admin";
     }
 }

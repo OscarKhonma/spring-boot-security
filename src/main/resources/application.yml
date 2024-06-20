@@ -9,8 +9,13 @@ spring:
     hibernate:
       ddl-auto: create
     database: mysql
-    show-sql: true
+    show-sql: false
     database-platform: org.hibernate.dialect.MySQL8Dialect
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG

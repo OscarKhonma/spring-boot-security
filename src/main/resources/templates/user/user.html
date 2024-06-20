@@ -72,8 +72,8 @@
         <td th:text="${user.username}"></td>
         <td th:text="${user.password}"></td>
         <td>
-                    <span th:each="role, iterStat : ${user.roles}"
-                          th:text="${role.name} + (${iterStat.last} ? '' : ', ')"></span>
+            <span th:each="role, iterStat : ${user.roles}"
+                  th:text="${role.name} + (${iterStat.last} ? '' : ', ')"></span>
         </td>
     </tr>
     </tbody>

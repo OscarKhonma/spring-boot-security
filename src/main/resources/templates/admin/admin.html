@@ -34,6 +34,9 @@
     <tr>
         <th>ID</th>
         <th>Username</th>
+        <th>Lastname</th>
+        <th>Email</th>
+        <th>age</th>
         <th>Roles</th>
         <th>Actions</th>
     </tr>
@@ -42,10 +45,14 @@
     <tr th:each="user: ${users}">
         <td th:text="${user.id}"></td>
         <td th:text="${user.username}"></td>
+        <td th:text="${user.lastname}"/>
+        <td th:text="${user.email}"/>
+        <td th:text="${user.age}"/>
         <td>
             <span th:each="role, iterStat : ${user.roles}"
                   th:text="${role.name} + (${iterStat.last} ? '' : ', ')"></span>
         </td>
+
         <td class="actions">
             <a th:href="@{/admin/update/{id}(id=${user.id})}">Update</a>
             <form th:method="POST" th:action="@{/admin/delete/{id}(id=${user.id})}">
